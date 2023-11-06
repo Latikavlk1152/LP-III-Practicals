@@ -1,0 +1,98 @@
+//fractional knapsack
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+//Structure to represent an item with weight and value
+struct Item {
+    int weight;
+    int value;
+};
+
+// Function to compare items by their value per unit weight (value-to-weight ratio)
+bool compareItems(const Item& item1, const Item& item2) {
+    double ratio1 = (item1.value) / (item1.weight);
+    double ratio2 = (item2.value) / item2.weight;
+    return ratio1 > ratio2; //sort in descending order by ratio
+}
+
+//Function to solve the Fractional Knapsack problem using a greedy approach
+double fractionalKnapsackGreedy(vector<Item>& items, int capacity) {
+    // Sort items by their value-to-weight ratio in descending order
+    sort(items.begin(), items.end(), compareItems);
+
+    double maxvalue = 0.0; // Initialize the result
+
+    for(auto i: items){
+        if(capacity==0){
+            break;
+        }
+        else if(i.weight<=capacity){
+            maxvalue+=i.value;
+            capacity-=i.weight;
+        }
+        else{
+            int each=i.value/i.weight;
+            maxvalue+=(each*capacity);
+            capacity=0;
+        }
+    }
+
+    return maxvalue;
+}
+
+int main() {
+    int n; // Number of items
+    int capacity; // Knapsack capacity
+
+    cout << "Enter the number of items: ";
+    cin >> n;
+
+    vector<Item> items(n);
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter the weight and value of item " << i + 1 << ": ";
+        cin >> items[i].weight >> items[i].value;
+    }
+
+    cout << "Enter the capacity of the knapsack: ";
+    cin >> capacity;
+
+    double maxValue = fractionalKnapsackGreedy(items, capacity);
+
+    cout << "The maximum value that can be obtained is: " << maxValue << endl;
+
+    return 0;
+}
+
+// # Fractional Knapsack :
+// # Time Complexity: O(N * log N)
+// # Auxiliary Space: O(N)
+
+
+//---------------------------------------------------------------------
+
+//python fractional
+// arr = [[500,30]]
+// w = 10
+// price = 0
+
+// arr = sorted(arr, key = lambda x : x[0] / x[1], reverse = True)
+
+// for i in range(len(arr)):
+// 	itemWt = arr[i][1]
+// 	itemP = arr[i][0]
+// 	if(itemWt > w):
+// 		price += w*(itemP / itemWt)
+// 		break
+// 	else:
+// 		price += itemP	
+// 		w -= itemWt
+
+// print(price)
+
+// # Fractional Knapsack :
+// # Time Complexity: O(N * log N)
+// # Auxiliary Space: O(N)
