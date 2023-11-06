@@ -1,0 +1,50 @@
+//daa exp 1 cpp.
+
+#include <iostream>
+#include <chrono>
+
+using namespace std;
+
+int fibonacci(int n) {
+    if (n <= 1) {
+        return n;
+    }
+    int prev = 0;
+    int curr = 1;
+    for (int i = 2; i <= n; ++i) {
+        int next = prev + curr;
+        prev = curr;
+        curr = next;
+    }
+    return curr;
+}
+
+int fibonacci_recursive(int n) {
+    if (n <= 1) {
+        return n;
+    }
+    return fibonacci_recursive(n - 1) + fibonacci_recursive(n - 2);
+}
+
+int main() {
+    int N = 40;
+
+    cout << "Given N = " << N << "\n";
+
+    auto start = chrono::high_resolution_clock::now();
+    cout << "Fibonacci non-recursive: " << fibonacci(N) << "\tTime: ";
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed_seconds = end - start;
+    cout << elapsed_seconds.count() << "s\tO(n)\tSpace: O(1)\n";
+
+    start = chrono::high_resolution_clock::now();
+    cout << "Fibonacci recursive:\t " << fibonacci_recursive(N) << "\tTime: ";
+    end = chrono::high_resolution_clock::now();
+    elapsed_seconds = end - start;
+    cout << elapsed_seconds.count() << "s\tO(2^n)\tSpace: O(n)\n";
+
+    //Fibonacci non-recursive:  Time : O(n)     Space: O(1)
+    //Fibonacci recursive:      Time : O(2^n)   Space: O(n)
+
+    return 0;
+}
